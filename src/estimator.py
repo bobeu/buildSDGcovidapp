@@ -9,7 +9,7 @@ input_d = dt.input_data
 # severe = myms.SevereImpact(report)
 
 currentlyInfected = mymi.Impact.currentlyInfected
-severe = myms.SevereImpact.currentlyInfected
+severeInfected = myms.SevereImpact.currentlyInfected
 
 
 InfectionBRT = covi.InfectionsByRequestedTime.forImpact
@@ -23,7 +23,7 @@ forBRTs = covi.InfectionsByRequestedTime.forSevere
 def estimator():
       
     impact = [currentlyInfected, InfectionBRT]
-    severeImpact = [severe, forBRTs]
+    severeImpact = [severeInfected, forBRTs]
     
     data = [input_d, impact, severeImpact]
 
