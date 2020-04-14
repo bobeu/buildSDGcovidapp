@@ -76,30 +76,72 @@ calcValueForIm = infeBRTs.forImpact()
 calcValueForSev = infeBRTs.forSevere()
 # print(calcValueForSev)
 
-# currentlyInfected = mymi.Impact.currentlyInfected
-# severe = myms.SevereImpact.currentlyInfected
+severeCasesByRequestedTime = calcValueForSev * 0.15
 
 
-# InfectionBRT = covi.InfectionsByRequestedTime.forImpact
-# forBRTs = covi.InfectionsByRequestedTime.forSevere
+def hospitalBedByRequestedTime():
+    tABed = input_data["totalHospitalBeds"]
+    actualAHosBeds = int(tABed - (tABed * (65 / 100)))
+    if(actualAHosBeds > severeCasesByRequestedTime):
+        val = int(actualAHosBeds - severeCasesByRequestedTime)
+        msg_1 = "There is more beds of amount "
 
-# creating instance of the class Impact
-# dni = mymi.Impact.currentlyInfected(report)
-# creating instance of the class SvereImpact
+        return (msg_1 + str(val))
+
+    elif(actualAHosBeds < severeCasesByRequestedTime):
+        val_2 = int(severeCasesByRequestedTime - actualAHosBeds)
+        msg_2 = "There is shortage of beds of "
+
+        return (msg_2 + str(val_2))
+    else:
+        print("There is enough beds to admit patient")
+
+
+class SevereCasesByRequestedTime():
+
+    def infRBTForImpact(self):
+        reqHospToRec = int(calcValueForIm * 0.15)
+
+        return reqHospToRec
+
+    def infRBTForSevere(self):
+        reqHospToRec = int(calcValueForSev * 0.15)
+
+        return reqHospToRec
+
+
+di = SevereCasesByRequestedTime()
+valueSevereIm = di.infRBTForImpact()
+valueSevereSev = di.infRBTForSevere()
 
 
 def estimator():
 
     impact = {
         'CurrentlyInfectedPeople': valueImpact,
-        'InfectionsRequestedByTime': calcValueForIm
+        'InfectionsRequestedByTime': calcValueForIm,
         }
 
     severeImpact = {
         'currentlyInfectedPeople': valueSevere,
-        'infectionsRequestedByTime': calcValueForSev
+        'infectionsRequestedByTime': calcValueForSev,
         }
-    data = {'Data': input_data, 'Impact': impact, 'SevereImpact': severeImpact}
+
+    severeCBRTime = {
+        'valueSevereImpact': valueSevereIm,
+        'valueSevereSev': valueSevereSev,
+        }
+
+    hospBedReqByTime = hospitalBedByRequestedTime()
+
+    data = {
+        'Data': input_data,
+        'Impact': impact,
+        'SevereImpact': severeImpact,
+        'severeCasesByRequestedTime': severeCBRTime,
+        'severeCasesRequestedByTime': severeCasesByRequestedTime,
+        'hospitalBedByRequestTime': hospBedReqByTime,
+        }
 
     return data
 
