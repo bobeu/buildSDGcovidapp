@@ -78,6 +78,31 @@ calcValueForSev = infeBRTs.forSevere()
 
 severeCasesByRequestedTime = calcValueForSev * 0.15
 
+casesForICUByRequestedTime = int(calcValueForSev * (5 / 100))
+caseForVentilatorByRequestedTime = int(calcValueForSev * (2 / 100))
+
+
+class DollarInFlight():
+
+    def calculatedForImpact(self):
+        return int((calcValueForIm * 0.71 * 5) / 58)
+
+    def calculatedForSevere(self):
+        valRegionEarn = int((calcValueForSev * 0.71 * 5) / 58)
+        avgDIncome = input_data["avgDailyIncomeInUSD"]
+
+        if(avgDIncome == 1.5):
+            dollar_flight = int((input_data["population"] * 0.65 * 1.5) / 30)
+
+            return dollar_flight
+        else:
+            return valRegionEarn
+
+
+dd = DollarInFlight()
+dd_2 = dd.calculatedForImpact()
+dd_3 = dd.calculatedForSevere()
+
 
 def hospitalBedByRequestedTime():
     tABed = input_data["totalHospitalBeds"]
@@ -133,6 +158,10 @@ def estimator():
         }
 
     hospBedReqByTime = hospitalBedByRequestedTime()
+    dollarFlight = {
+        'dollarInflightForImpact': dd_2,
+        'dollarInFlightForSevere': dd_3,
+        }
 
     data = {
         'Data': input_data,
@@ -141,6 +170,7 @@ def estimator():
         'severeCasesByRequestedTime': severeCBRTime,
         'severeCasesRequestedByTime': severeCasesByRequestedTime,
         'hospitalBedByRequestTime': hospBedReqByTime,
+        'dollarsInFlight': dollarFlight,
         }
 
     return data
